@@ -1,32 +1,971 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>无畏契约十宗罪 | 团队协作的致命习惯</title>
-<meta property="og:title" content="无畏契约十宗罪 | 团队协作的致命习惯">
-<meta property="og:description" content="识别并克服破坏团队协作的10个致命习惯，从新手到赋能必备">
-<meta property="og:image" content="https://img.qpic.cn/wechat_redirect/valorant_sins_card.png">
+<title>VCT Hub | 无畏契约上分平台</title>
+<meta property="og:title" content="VCT Hub | 无畏契约上分平台">
+<meta property="og:description" content="十宗罪 · 车队大厅 · 对局记录 · 完整进阶指南 —— 打造无畏契约玩家共同进步的交互式平台">
 <meta property="og:url" content="https://chenyizhou188.github.io/valorant-sins/">
 <meta property="twitter:card" content="summary_large_image">
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0f1923;color:#e8e8e6}.container{max-width:800px;margin:0 auto;padding:20px}.header{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#ff4655 0%,#0f1923 70%);border-radius:0 0 20px 20px}.header h1{font-size:2.2em;letter-spacing:1px;margin-bottom:8px}.header p{color:#8b9799;font-size:.95em}.sins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin:30px 0}.sin-card{background:#1a2634;border:1px solid #2a3a4a;border-radius:10px;padding:16px;transition:all .2s}.sin-card:hover{border-color:#ff4655}.sin-num{font-size:.75em;color:#8b9799;margin-bottom:4px}.sin-name{font-size:1em;font-weight:700;margin-bottom:6px;color:#ff4655}.sin-desc{font-size:.85em;color:#8b9799;margin-bottom:8px;line-height:1.5}.sin-fix{font-size:.8em;color:#00e5ff;padding:6px 8px;background:rgba(0,229,255,.05);border-radius:6px;border-left:3px solid #00e5ff}.footer{text-align:center;margin-top:40px;padding:20px;border-top:1px solid #2a3a4a;color:#8b9799;font-size:.85em}</style>
+<style>
+/* === CSS Variables === */
+:root {
+  --brand-red:#ff4655; --brand-dark:#0f1923; --brand-mid:#1a2634;
+  --surface:#1a2634; --surface-hover:#233044; --border:#2a3a4a;
+  --text:#e8e8e6; --text-dim:#8b9799; --accent-cyan:#00e5ff;
+  --bg:#0f1923; --shadow:0 4px 24px rgba(0,0,0,.4);
+  --radius:8px; --radius-sm:4px; --nav-height:56px;
+  --font-mono:'JetBrains Mono','Cascadia Code',Consolas,monospace;
+}
+[data-theme="light"] {
+  --surface:#f0f2f5; --surface-hover:#e4e6e9; --border:#d0d4da;
+  --text:#1a1a2e; --text-dim:#6b7280; --bg:#f7f8fa;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+/* === Reset & Base === */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
+a{color:var(--accent-cyan);text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit;font-size:inherit}
+input,select,textarea{font-family:inherit;font-size:.9rem;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;outline:none;transition:border .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--brand-red)}
+
+/* === Loading Screen === */
+#loading-screen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s,visibility .4s}
+#loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#loading-screen .logo-text{font-size:2rem;font-weight:900;letter-spacing:4px;color:var(--brand-red);margin-bottom:12px}
+#loading-screen .loading-bar{width:200px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+#loading-screen .loading-bar-fill{height:100%;width:0;background:var(--brand-red);animation:loadBar 1.2s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes loadBar{0%{width:0}50%{width:70%}100%{width:100%}}
+
+/* === Nav === */
+#top-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;height:var(--nav-height);gap:0;backdrop-filter:blur(12px)}
+#top-nav .logo{font-weight:900;font-size:1.15rem;color:var(--brand-red);letter-spacing:2px;margin-right:auto;white-space:nowrap}
+#top-nav .nav-tabs{display:flex;gap:0;height:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+#top-nav .nav-tabs::-webkit-scrollbar{display:none}
+#top-nav .nav-tab{position:relative;padding:0 14px;height:100%;display:flex;align-items:center;font-size:.82rem;font-weight:600;color:var(--text-dim);background:none;transition:color .2s;white-space:nowrap;letter-spacing:.5px}
+#top-nav .nav-tab:hover{color:var(--text)}
+#top-nav .nav-tab.active{color:var(--brand-red)}
+#top-nav .nav-tab.active::after{content:'';position:absolute;bottom:0;left:14px;right:14px;height:2px;background:var(--brand-red)}
+#top-nav .nav-actions{display:flex;align-items:center;gap:8px;margin-left:12px}
+#top-nav .btn-icon{width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:background .15s;border:1px solid var(--border)}
+#top-nav .btn-icon:hover{background:var(--surface-hover)}
+#top-nav .btn-auth{padding:6px 16px;border-radius:var(--radius);font-size:.8rem;font-weight:600;background:var(--brand-red);color:#fff;transition:opacity .15s}
+#top-nav .btn-auth:hover{opacity:.85}
+
+/* === Content Area === */
+#content{max-width:1200px;margin:0 auto;padding:20px 16px 80px}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeSlideIn .35s ease-out}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* === Section Header === */
+.section-header{margin-bottom:24px}
+.section-header h2{font-size:1.6rem;font-weight:800;letter-spacing:1px}
+.section-header p{color:var(--text-dim);font-size:.88rem;margin-top:4px}
+
+/* === Daily Quote === */
+.daily-quote{background:var(--surface);border-left:3px solid var(--brand-red);padding:16px 20px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:28px;font-style:italic;font-size:.92rem;color:var(--text-dim)}
+.daily-quote .author{display:block;margin-top:6px;font-size:.78rem;color:var(--brand-red);font-style:normal;font-weight:600}
+
+/* === Sins Grid + Check === */
+.sin-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:all .2s;position:relative;display:flex;gap:12px;align-items:flex-start}
+.sin-card:hover{border-color:var(--brand-red);transform:translateY(-1px);box-shadow:var(--shadow)}
+.sin-card input[type="checkbox"]{appearance:none;-webkit-appearance:none;width:22px;height:22px;min-width:22px;border:2px solid var(--border);border-radius:var(--radius-sm);background:transparent;cursor:pointer;transition:all .15s;margin-top:2px;position:relative}
+.sin-card input[type="checkbox"]:checked{background:var(--brand-red);border-color:var(--brand-red)}
+.sin-card input[type="checkbox"]:checked::after{content:'';position:absolute;left:6px;top:2px;width:4px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.sin-info{flex:1}.sin-num{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);margin-bottom:2px}
+.sin-name{font-weight:700;color:var(--brand-red);margin-bottom:4px}
+.sin-desc{font-size:.85rem;color:var(--text-dim);line-height:1.5;margin-bottom:6px}
+.sin-fix{font-size:.78rem;color:var(--accent-cyan);padding:5px 8px;background:rgba(0,229,255,.04);border-radius:var(--radius-sm);border-left:2px solid var(--accent-cyan)}
+
+/* === Sin Stats === */
+.sin-stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;padding:16px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)}
+.sin-stats .stat{text-align:center;flex:1;min-width:80px}
+.sin-stats .stat .val{font-size:1.8rem;font-weight:900;color:var(--brand-red);font-family:var(--font-mono)}
+.sin-stats .stat .lbl{font-size:.75rem;color:var(--text-dim)}
+.sin-stats .stat.worst .val{color:#ffaa00}
+
+/* === Squad === */
+.squad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.squad-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:all .2s}
+.squad-card:hover{border-color:var(--brand-red);box-shadow:var(--shadow)}
+.squad-card .sq-name{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.squad-card .sq-desc{font-size:.82rem;color:var(--text-dim);margin-bottom:12px}
+.squad-card .sq-meta{display:flex;gap:16px;font-size:.78rem;color:var(--text-dim);margin-bottom:12px}
+.squad-card .sq-members{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.squad-card .member-tag{font-size:.72rem;padding:3px 8px;border-radius:12px;background:var(--surface-hover);border:1px solid var(--border);white-space:nowrap}
+.squad-card .btn-join{width:100%;padding:8px;border-radius:var(--radius-sm);font-weight:600;font-size:.85rem;background:var(--brand-red);color:#fff;transition:opacity .15s}
+.squad-card .btn-join:hover{opacity:.85}
+.squad-card .btn-join.joined{background:var(--surface-hover);color:var(--text);border:1px solid var(--border)}
+.squad-card .role-badge{padding:2px 6px;border-radius:var(--radius-sm);font-size:.7rem;font-weight:600;background:var(--brand-red);color:#fff;margin-left:6px}
+
+/* === Match Records === */
+.match-list{display:flex;flex-direction:column;gap:8px}
+.match-row{display:grid;grid-template-columns:60px 80px 1fr 40px 40px 40px 40px;gap:12px;align-items:center;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;transition:all .15s}
+.match-row:hover{border-color:var(--brand-red)}
+.match-row.win{border-left:3px solid #00e5a0}
+.match-row.lose{border-left:3px solid var(--brand-red)}
+.match-row .result-tag{padding:2px 10px;border-radius:12px;font-size:.72rem;font-weight:600;text-align:center}
+.match-row.win .result-tag{background:rgba(0,229,160,.15);color:#00e5a0}
+.match-row.lose .result-tag{background:rgba(255,70,85,.15);color:var(--brand-red)}
+.match-row .kda{font-family:var(--font-mono);font-size:.82rem}
+.btn-action{padding:8px 20px;border-radius:var(--radius-sm);font-weight:600;font-size:.82rem;background:var(--surface);color:var(--text);border:1px solid var(--border);transition:all .15s}
+.btn-action:hover{background:var(--surface-hover);border-color:var(--brand-red)}
+.btn-action.primary{background:var(--brand-red);color:#fff;border-color:var(--brand-red)}
+.btn-action.primary:hover{opacity:.85}
+
+/* === Guide Section === */
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:28px}
+.guide-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s;text-align:center}
+.guide-card:hover{border-color:var(--brand-red);transform:translateY(-2px);box-shadow:var(--shadow)}
+.guide-card .agent-icon{font-size:2.5rem;margin-bottom:6px;display:block}
+.guide-card .agent-name{font-weight:700;font-size:.82rem}
+.guide-card .agent-role{font-size:.7rem;color:var(--text-dim)}
+.guide-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.guide-modal.open{display:flex;animation:fadeIn .2s ease-out}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.guide-modal .modal-content{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:640px;width:90vw;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.guide-modal .modal-close{float:right;background:none;border:none;color:var(--text-dim);font-size:1.5rem;cursor:pointer;line-height:1}
+.guide-modal .modal-close:hover{color:var(--brand-red)}
+.guide-modal h3{color:var(--brand-red);font-size:1.3rem;margin-bottom:8px}
+.guide-modal .skill-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.guide-modal .skill-item{background:var(--surface);padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.guide-modal .skill-item .sk-name{font-weight:700;font-size:.8rem;color:var(--accent-cyan)}
+.guide-modal .skill-item .sk-desc{font-size:.78rem;color:var(--text-dim);margin-top:2px}
+.guide-modal .guide-sub{margin-top:16px;padding-top:12px;border-top:1px solid var(--border)}
+.guide-modal .guide-sub h4{font-size:.85rem;font-weight:700;margin-bottom:6px}
+.guide-modal .guide-sub .sub-tag{display:inline-block;background:var(--surface);padding:4px 10px;border-radius:12px;font-size:.75rem;margin:3px;border:1px solid var(--border)}
+
+/* === Sub Guide Tabs === */
+.sub-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.sub-tabs::-webkit-scrollbar{display:none}
+.sub-tab{padding:8px 18px;font-size:.82rem;font-weight:600;color:var(--text-dim);background:none;border:none;cursor:pointer;white-space:nowrap;transition:color .15s;position:relative}
+.sub-tab:hover{color:var(--text)}
+.sub-tab.active{color:var(--brand-red)}
+.sub-tab.active::after{content:'';position:absolute;bottom:-1px;left:18px;right:18px;height:2px;background:var(--brand-red)}
+
+/* === Leaderboard === */
+.lb-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.lb-table th{text-align:left;padding:12px 16px;color:var(--text-dim);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border)}
+.lb-table td{padding:12px 16px;border-bottom:1px solid var(--border)}
+.lb-table tr:hover td{background:var(--surface-hover)}
+.lb-table .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-weight:800;font-size:.8rem;font-family:var(--font-mono)}
+.lb-table .rank-badge.gold{background:#ffaa00;color:#0f1923}
+.lb-table .rank-badge.silver{background:#a0b0c0;color:#0f1923}
+.lb-table .rank-badge.bronze{background:#cd7f32;color:#fff}
+
+/* === Profile === */
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:500px}
+.profile-card .avatar{width:72px;height:72px;border-radius:50%;background:var(--surface-hover);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:16px}
+.profile-field{margin-bottom:16px}
+.profile-field label{display:block;font-size:.78rem;font-weight:600;color:var(--text-dim);margin-bottom:4px}
+.profile-field input{width:100%}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.setting-row .lbl{font-weight:500;font-size:.9rem}
+.setting-row .hint{font-size:.75rem;color:var(--text-dim)}
+.toggle-switch{position:relative;width:44px;height:24px;cursor:pointer}
+.toggle-switch input{display:none}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:12px;transition:.2s}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:.2s}
+.toggle-switch input:checked+.toggle-slider{background:var(--brand-red)}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(20px)}
+
+/* === Auth Modal === */
+.auth-overlay{position:fixed;inset:0;z-index:400;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.auth-overlay.open{display:flex}
+.auth-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:90vw;max-width:380px;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.auth-box h3{font-size:1.2rem;margin-bottom:20px;text-align:center}
+.auth-box .form-group{margin-bottom:14px}
+.auth-box .form-group input{width:100%}
+.auth-box .btn-full{width:100%;padding:10px;border-radius:var(--radius-sm);font-weight:600;font-size:.9rem;margin-top:6px}
+.auth-box .auth-switch{text-align:center;margin-top:16px;font-size:.82rem;color:var(--text-dim)}
+.auth-box .auth-switch button{background:none;color:var(--accent-cyan);font-weight:600;cursor:pointer;font-size:.82rem}
+
+/* === Toast === */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:500;padding:10px 24px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:.82rem;box-shadow:var(--shadow);opacity:0;transition:opacity .3s;pointer-events:none}
+#toast.show{opacity:1}
+#toast.error{border-color:var(--brand-red);color:var(--brand-red)}
+#toast.success{border-color:#00e5a0;color:#00e5a0}
+
+/* === Search === */
+.search-bar{display:flex;gap:8px;margin-bottom:20px}
+.search-bar input{flex:1;padding:10px 16px;border-radius:20px;font-size:.85rem}
+
+/* === Footer === */
+.footer{text-align:center;margin-top:40px;padding:20px;border-top:1px solid var(--border);color:var(--text-dim);font-size:.78rem}
+
+/* === Responsive === */
+@media(max-width:768px){
+  #top-nav .nav-tab{padding:0 8px;font-size:.72rem}
+  #top-nav .logo{font-size:.9rem;letter-spacing:1px}
+  .match-row{grid-template-columns:50px 70px 1fr 35px 35px 35px;gap:6px;font-size:.78rem;padding:10px}
+  .squad-grid{grid-template-columns:1fr}
+  .guide-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
 <body>
-<div class="container">
-<div class="header"><h1>无畏契约十宗罪</h1><p>识别并克服破坏团队协作的致命习惯</p></div>
-<div class="sins-grid">
-<div class="sin-card"><div class="sin-num">01</div><div class="sin-name">🗣️ 不报点</div><div class="sin-desc">被打死之后一声不吭，队友不知道敌人在哪</div><div class="sin-fix">死亡后 1 秒内报出敌人位置和血量</div></div>
-<div class="sin-card"><div class="sin-num">02</div><div class="sin-name">🎯 不补枪</div><div class="sin-desc">队友被打死了你还在架枪发呆，错失补枪时机</div><div class="sin-fix">队友开枪后立刻跟进，1秒内完成补枪</div></div>
-<div class="sin-card"><div class="sin-num">03</div><div class="sin-name">🏃 脱节单干</div><div class="sin-desc">不和队友一起推进，自己单独走一条路送死</div><div class="sin-fix">时刻关注小地图队友位置，保持同步推进</div></div>
-<div class="sin-card"><div class="sin-num">04</div><div class="sin-name">💰 经济不同步</div><div class="sin-desc">队友存钱你force buy，队友force你存钱</div><div class="sin-fix">每回合开始先看团队经济状态再做购买决定</div></div>
-<div class="sin-card"><div class="sin-num">05</div><div class="sin-name">👀 不看队友</div><div class="sin-desc">只顾自己视角，完全不看小地图队友动向</div><div class="sin-fix">每 3 秒扫一眼小地图，了解队友位置和状态</div></div>
-<div class="sin-card"><div class="sin-num">06</div><div class="sin-name">💣 道具乱丢</div><div class="sin-desc">闪光闪队友、烟雾封自家、燃烧弹丢自己脚下</div><div class="sin-fix">丢道具前确认队友位置，练习自定义房间道具投掷</div></div>
-<div class="sin-card"><div class="sin-num">07</div><div class="sin-name">🎮 残局各打各</div><div class="sin-desc">残局不沟通，各自为战，一个一个送</div><div class="sin-fix">残局必须开麦沟通，统一行动</div></div>
-<div class="sin-card"><div class="sin-num">08</div><div class="sin-name">😤 逆风摆烂</div><div class="sin-desc">输了几局就开始消极比赛，放弃治疗</div><div class="sin-fix">逆风时更要冷静，调整战术，打好每一回合</div></div>
-<div class="sin-card"><div class="sin-num">09</div><div class="sin-name">🛡️ 不帮补位</div><div class="sin-desc">队友阵亡后空出的位置没人补，防线出现漏洞</div><div class="sin-fix">听到队友阵亡立刻判断是否需要补位</div></div>
-<div class="sin-card"><div class="sin-num">10</div><div class="sin-name">🙉 不听指挥</div><div class="sin-desc">指挥给了明确的战术意图，但各打各的</div><div class="sin-fix">信任指挥，即使有不同意见也在回合结束后再讨论</div></div>
+
+<div id="loading-screen">
+  <div class="logo-text">VCT HUB</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
 </div>
-<div class="footer"><p>完整进阶指南：25名特工技能 · 10张地图攻略 · 枪械道具 · 决策流程</p><p style="margin-top:8px;color:#8b9799">© VALORANT 进阶指南 | 5v5 配合为王</p></div>
+
+<nav id="top-nav">
+  <div class="logo">VCT HUB</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-tab="sins">十宗罪</button>
+    <button class="nav-tab" data-tab="squad">车队大厅</button>
+    <button class="nav-tab" data-tab="matches">对局记录</button>
+    <button class="nav-tab" data-tab="guide">进阶指南</button>
+    <button class="nav-tab" data-tab="leaderboard">排行榜</button>
+    <button class="nav-tab" data-tab="profile">我的</button>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-icon" id="btn-search" title="搜索">🔍</button>
+    <button class="btn-icon" id="btn-theme" title="切换主题">🌓</button>
+    <button class="btn-icon" id="btn-share" title="分享">🔗</button>
+    <button class="btn-auth" id="btn-auth">登录</button>
+  </div>
+</nav>
+
+<div id="content">
+
+<!-- Tab: 十宗罪 -->
+<div class="tab-content active" id="tab-sins">
+  <div class="section-header"><h2>无畏契约十宗罪</h2><p>识别并克服破坏团队协作的致命习惯</p></div>
+  <div class="daily-quote" id="daily-quote"><span class="quote-text">加载中...</span><span class="author"></span></div>
+  <div class="search-bar"><input type="text" id="sin-search" placeholder="搜索罪状..."></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px" id="sins-grid"></div>
+  <div class="sin-stats" id="sin-stats" style="display:none">
+    <div class="stat"><div class="val" id="stat-checked">0</div><div class="lbl">今日忏悔</div></div>
+    <div class="stat worst"><div class="val" id="stat-worst">—</div><div class="lbl">最严重</div></div>
+  </div>
 </div>
+
+<!-- Tab: 车队大厅 -->
+<div class="tab-content" id="tab-squad">
+  <div class="section-header"><h2>车队大厅</h2><p>找到志同道合的战友，共同上分</p></div>
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn-action primary" id="btn-create-squad">创建车队</button>
+    <input type="text" id="squad-search" placeholder="搜索车队..." style="flex:1;min-width:200px">
+  </div>
+  <div class="squad-grid" id="squad-grid"><p style="color:var(--text-dim);grid-column:1/-1;text-align:center;padding:40px">登录后即可浏览和加入车队</p></div>
+</div>
+
+<!-- Tab: 对局记录 -->
+<div class="tab-content" id="tab-matches">
+  <div class="section-header"><h2>对局记录</h2><p>关联你的 Riot ID，一键拉取对局数据</p></div>
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+    <input type="text" id="riot-name" placeholder="Riot ID (例如: 玩家名#TAG)" style="flex:1;min-width:200px">
+    <button class="btn-action primary" id="btn-fetch-matches">一键拉取</button>
+    <button class="btn-action" id="btn-add-match">手动录入</button>
+  </div>
+  <div class="match-list" id="match-list"><p style="color:var(--text-dim);text-align:center;padding:40px">登录并关联 Riot ID 后即可查看对局</p></div>
+</div>
+
+<!-- Tab: 进阶指南 -->
+<div class="tab-content" id="tab-guide">
+  <div class="section-header"><h2>进阶指南</h2><p>25 名特工 · 10 张地图 · 武器道具 · 决策流程</p></div>
+  <div class="sub-tabs" id="guide-subtabs">
+    <button class="sub-tab active" data-sub="agents">特工</button>
+    <button class="sub-tab" data-sub="mira">迷核专题</button>
+    <button class="sub-tab" data-sub="maps">地图</button>
+    <button class="sub-tab" data-sub="weapons">武器</button>
+    <button class="sub-tab" data-sub="items">道具</button>
+    <button class="sub-tab" data-sub="progress">进化路线</button>
+    <button class="sub-tab" data-sub="decisions">决策流程</button>
+  </div>
+  <div id="guide-content"></div>
+</div>
+
+<!-- Tab: 排行榜 -->
+<div class="tab-content" id="tab-leaderboard">
+  <div class="section-header"><h2>排行榜</h2><p>车队胜率 + 个人 MVP</p></div>
+  <div class="sub-tabs" id="lb-subtabs">
+    <button class="sub-tab active" data-lb="squads">车队胜率榜</button>
+    <button class="sub-tab" data-lb="players">个人 MVP 榜</button>
+  </div>
+  <div id="lb-content"><p style="color:var(--text-dim);text-align:center;padding:40px">加载中...</p></div>
+</div>
+
+<!-- Tab: 我的 -->
+<div class="tab-content" id="tab-profile">
+  <div class="section-header"><h2>我的</h2></div>
+  <div id="profile-content"><p style="color:var(--text-dim);text-align:center;padding:40px">登录后查看个人资料</p></div>
+</div>
+
+</div>
+
+<!-- Agent Detail Modal -->
+<div class="guide-modal" id="agent-modal"><div class="modal-content" id="agent-modal-content"></div></div>
+
+<!-- Squad Create/Join Modal -->
+<div class="guide-modal" id="squad-modal"><div class="modal-content" id="squad-modal-content"></div></div>
+
+<!-- Match Add Modal -->
+<div class="guide-modal" id="match-modal"><div class="modal-content" id="match-modal-content"></div></div>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box" id="auth-box"></div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// === Supabase Init ===
+const SB_URL = 'https://apueeywuobvgrekaxowa.supabase.co';
+const SB_KEY = 'sb_publishable_ApVL0oE2E3DtqsNa082ArA_kfxUtsvl';
+const EDGE_URL = 'https://apueeywuobvgrekaxowa.supabase.co/functions/v1/fetch-riot-matches';
+const supa = supabase.createClient(SB_URL, SB_KEY);
+
+// === State ===
+let currentUser = null;
+let currentProfile = null;
+let allSquads = [];
+let allMatches = [];
+let checkedSins = JSON.parse(localStorage.getItem('vct_checked_sins') || '{}');
+
+// === Audio ===
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(freq, dur, type='square') {
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + dur);
+  } catch(e) {}
+}
+function sfxClick() { playSound(800, 0.08, 'square') }
+function sfxSuccess() { playSound(1200, 0.12, 'sine'); setTimeout(()=>playSound(1600, 0.12, 'sine'), 80) }
+function sfxError() { playSound(200, 0.2, 'sawtooth') }
+
+// === Toast ===
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = type; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// === Loading Screen ===
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+  }, 800);
+});
+
+// === Theme ===
+const themeBtn = document.getElementById('btn-theme');
+const savedTheme = localStorage.getItem('vct_theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+themeBtn.addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('vct_theme', next);
+  sfxClick();
+});
+
+// === Tab Switching ===
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  document.querySelector(`.nav-tab[data-tab="${tabId}"]`).classList.add('active');
+  if (tabId === 'squad') loadSquads();
+  if (tabId === 'matches') loadMatches();
+  if (tabId === 'leaderboard') loadLeaderboard();
+  if (tabId === 'profile') renderProfile();
+  if (tabId === 'sins') renderSins();
+  if (tabId === 'guide' && !document.getElementById('guide-content').innerHTML) renderGuide('agents');
+  sfxClick();
+}
+
+document.querySelectorAll('.nav-tab').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// === Auth ===
+const authOverlay = document.getElementById('auth-overlay');
+const authBox = document.getElementById('auth-box');
+const authBtn = document.getElementById('btn-auth');
+let authMode = 'login';
+
+function renderAuth() {
+  authBox.innerHTML = `
+    <h3>${authMode === 'login' ? '登录 VCT Hub' : '注册 VCT Hub'}</h3>
+    <div class="form-group"><input type="email" id="auth-email" placeholder="邮箱"></div>
+    <div class="form-group"><input type="password" id="auth-password" placeholder="密码"></div>
+    ${authMode === 'register' ? '<div class="form-group"><input type="text" id="auth-username" placeholder="游戏昵称"></div>' : ''}
+    <button class="btn-full btn-action primary" id="auth-submit">${authMode === 'login' ? '登录' : '注册'}</button>
+    <div class="auth-switch">
+      ${authMode === 'login' ? '没有账号？<button id="auth-switch">去注册</button>' : '已有账号？<button id="auth-switch">去登录</button>'}
+    </div>
+    <button style="background:none;color:var(--text-dim);width:100%;margin-top:8px;font-size:.8rem" id="auth-close">关闭</button>
+  `;
+  document.getElementById('auth-submit').addEventListener('click', handleAuth);
+  document.getElementById('auth-switch').addEventListener('click', () => { authMode = authMode === 'login' ? 'register' : 'login'; renderAuth(); });
+  document.getElementById('auth-close').addEventListener('click', () => authOverlay.classList.remove('open'));
+}
+
+async function handleAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!email || !password) { toast('请填写邮箱和密码', 'error'); sfxError(); return; }
+
+  if (authMode === 'register') {
+    const username = document.getElementById('auth-username')?.value.trim();
+    if (!username) { toast('请填写游戏昵称', 'error'); return; }
+    const { data, error } = await supa.auth.signUp({ email, password, options: { data: { username } } });
+    if (error) { toast(error.message, 'error'); sfxError(); return; }
+    toast('注册成功！请查看邮箱确认', 'success'); sfxSuccess();
+    authOverlay.classList.remove('open');
+  } else {
+    const { data, error } = await supa.auth.signInWithPassword({ email, password });
+    if (error) { toast(error.message, 'error'); sfxError(); return; }
+    toast('登录成功', 'success'); sfxSuccess();
+    authOverlay.classList.remove('open');
+    await initUser();
+  }
+}
+
+authBtn.addEventListener('click', () => {
+  if (currentUser) { supa.auth.signOut(); currentUser = null; currentProfile = null; updateAuthUI(); toast('已退出'); return; }
+  authMode = 'login'; renderAuth(); authOverlay.classList.add('open');
+});
+
+// === Auth State ===
+supa.auth.onAuthStateChange(async (event, session) => {
+  if (session?.user) {
+    currentUser = session.user;
+    await loadProfile();
+    updateAuthUI();
+  } else {
+    currentUser = null; currentProfile = null;
+    updateAuthUI();
+  }
+});
+
+async function initUser() {
+  const { data: { user } } = await supa.auth.getUser();
+  if (user) { currentUser = user; await loadProfile(); }
+  updateAuthUI();
+}
+
+async function loadProfile() {
+  if (!currentUser) return;
+  const { data } = await supa.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
+  if (data) currentProfile = data;
+}
+
+function updateAuthUI() {
+  if (currentUser) {
+    authBtn.textContent = currentProfile?.username || currentUser.email?.split('@')[0] || '已登录';
+    authBtn.style.background = 'var(--surface)';
+    authBtn.style.color = 'var(--text)';
+    authBtn.style.border = '1px solid var(--border)';
+    authBtn.title = '点击退出';
+  } else {
+    authBtn.textContent = '登录';
+    authBtn.style.background = 'var(--brand-red)';
+    authBtn.style.color = '#fff';
+    authBtn.style.border = 'none';
+    authBtn.title = '';
+  }
+}
+
+// === SIN DATA ===
+const sinsData = [
+  { id: 1, emoji: '🗣️', name: '不报点', desc: '被打死之后一声不吭，队友不知道敌人在哪', fix: '死亡后 1 秒内报出敌人位置和血量' },
+  { id: 2, emoji: '🎯', name: '不补枪', desc: '队友被打死了你还在架枪发呆，错失补枪时机', fix: '队友开枪后立刻跟进，1秒内完成补枪' },
+  { id: 3, emoji: '🏃', name: '脱节单干', desc: '不和队友一起推进，自己单独走一条路送死', fix: '时刻关注小地图队友位置，保持同步推进' },
+  { id: 4, emoji: '💰', name: '经济不同步', desc: '队友存钱你 force buy，队友 force 你存钱', fix: '每回合开始先看团队经济状态再做购买决定' },
+  { id: 5, emoji: '👀', name: '不看队友', desc: '只顾自己视角，完全不看小地图队友动向', fix: '每 3 秒扫一眼小地图，了解队友位置和状态' },
+  { id: 6, emoji: '💣', name: '道具乱丢', desc: '闪光闪队友、烟雾封自家、燃烧弹丢自己脚下', fix: '丢道具前确认队友位置，练习自定义房间道具投掷' },
+  { id: 7, emoji: '🎮', name: '残局各打各', desc: '残局不沟通，各自为战，一个一个送', fix: '残局必须开麦沟通，统一行动' },
+  { id: 8, emoji: '😤', name: '逆风摆烂', desc: '输了几局就开始消极比赛，放弃治疗', fix: '逆风时更要冷静，调整战术，打好每一回合' },
+  { id: 9, emoji: '🛡️', name: '不帮补位', desc: '队友阵亡后空出的位置没人补，防线出现漏洞', fix: '听到队友阵亡立刻判断是否需要补位' },
+  { id: 10, emoji: '🙉', name: '不听指挥', desc: '指挥给了明确的战术意图，但各打各的', fix: '信任指挥，即使有不同意见也在回合结束后再讨论' },
+];
+
+function renderSins(filter='') {
+  const grid = document.getElementById('sins-grid');
+  const f = filter.toLowerCase();
+  const filtered = sinsData.filter(s => !f || s.name.includes(f) || s.desc.includes(f) || s.fix.includes(f));
+  grid.innerHTML = filtered.map(s => `
+    <div class="sin-card" style="animation:fadeSlideIn ${0.1 + s.id * 0.05}s ease-out both">
+      <input type="checkbox" data-sin="${s.id}" ${checkedSins[s.id] ? 'checked' : ''}>
+      <div class="sin-info">
+        <div class="sin-num">#${String(s.id).padStart(2,'0')}</div>
+        <div class="sin-name">${s.emoji} ${s.name}</div>
+        <div class="sin-desc">${s.desc}</div>
+        <div class="sin-fix">✅ ${s.fix}</div>
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('#sins-grid input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      checkedSins[cb.dataset.sin] = cb.checked;
+      localStorage.setItem('vct_checked_sins', JSON.stringify(checkedSins));
+      updateSinStats();
+      cb.checked ? sfxClick() : playSound(400, 0.06);
+    });
+  });
+  updateSinStats();
+}
+
+function updateSinStats() {
+  const checked = Object.values(checkedSins).filter(Boolean).length;
+  document.getElementById('sin-stats').style.display = checked > 0 ? 'flex' : 'none';
+  document.getElementById('stat-checked').textContent = checked;
+  const worstId = Object.entries(checkedSins).filter(([_,v]) => v).map(([k]) => parseInt(k))[0];
+  document.getElementById('stat-worst').textContent = worstId ? sinsData.find(s => s.id === worstId)?.name || '—' : '—';
+}
+
+document.getElementById('sin-search').addEventListener('input', e => renderSins(e.target.value));
+
+// === Daily Quote ===
+async function loadQuote() {
+  try {
+    const { data } = await supa.from('daily_quotes').select('*').limit(1).order('id', { ascending: false });
+    if (data && data.length) {
+      const q = data[0];
+      document.querySelector('#daily-quote .quote-text').textContent = `"${q.quote}"`;
+      document.querySelector('#daily-quote .author').textContent = `— ${q.author}`;
+    }
+  } catch(e) {
+    const fallback = ['配合不是让队友配合你，而是你主动配合团队', '信息比枪法更重要', '补枪是最基本的尊重'];
+    const q = fallback[Math.floor(Math.random() * fallback.length)];
+    document.querySelector('#daily-quote .quote-text').textContent = `"${q}"`;
+    document.querySelector('#daily-quote .author').textContent = '— VCT Hub';
+  }
+}
+
+// === Squad ===
+async function loadSquads() {
+  if (!currentUser) { document.getElementById('squad-grid').innerHTML = '<p style="color:var(--text-dim);grid-column:1/-1;text-align:center;padding:40px">登录后即可浏览和加入车队</p>'; return; }
+  const { data } = await supa.from('squads').select('*, squad_members(*, profiles:user_id(username))').order('created_at', { ascending: false });
+  allSquads = data || [];
+  renderSquads();
+}
+
+function renderSquads(filter='') {
+  const grid = document.getElementById('squad-grid');
+  const f = filter.toLowerCase();
+  const filtered = allSquads.filter(s => !f || s.name.toLowerCase().includes(f) || s.description.toLowerCase().includes(f));
+  if (!filtered.length) { grid.innerHTML = '<p style="color:var(--text-dim);grid-column:1/-1;text-align:center;padding:40px">没有找到车队，创建一个吧</p>'; return; }
+  grid.innerHTML = filtered.map(s => {
+    const members = s.squad_members || [];
+    const isMember = members.some(m => m.user_id === currentUser?.id);
+    return `
+    <div class="squad-card">
+      <div class="sq-name">${s.name}</div>
+      <div class="sq-desc">${s.description || '队长很懒，什么都没写'}</div>
+      <div class="sq-meta"><span>👥 ${s.member_count || members.length} 人</span><span>📊 胜率 ${(s.win_rate || 0).toFixed(1)}%</span></div>
+      <div class="sq-members">${members.slice(0, 6).map(m => {
+        const agents = Array.isArray(m.preferred_agents) ? m.preferred_agents : [];
+        const maps = Array.isArray(m.preferred_maps) ? m.preferred_maps : [];
+        return `<span class="member-tag">${m.profiles?.username || '匿名'}${m.role ? `<span class="role-badge">${m.role}</span>` : ''}${agents.length ? ' 🎯'+agents.slice(0,2).join('/') : ''}${maps.length ? ' 🗺️'+maps.slice(0,1) : ''}</span>`;
+      }).join('')}</div>
+      <button class="btn-join ${isMember ? 'joined' : ''}" data-sid="${s.id}">${isMember ? '已加入' : '加入车队'}</button>
+    </div>`;
+  });
+  document.querySelectorAll('.btn-join').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!currentUser) { toast('请先登录', 'error'); return; }
+      const sid = btn.dataset.sid;
+      if (btn.classList.contains('joined')) {
+        await supa.from('squad_members').delete().eq('squad_id', sid).eq('user_id', currentUser.id);
+        toast('已退出车队', 'success'); sfxSuccess(); loadSquads();
+      } else {
+        openSquadJoin(sid);
+      }
+    });
+  });
+}
+
+document.getElementById('squad-search').addEventListener('input', e => renderSquads(e.target.value));
+
+document.getElementById('btn-create-squad').addEventListener('click', () => {
+  if (!currentUser) { toast('请先登录', 'error'); return; }
+  document.getElementById('squad-modal').classList.add('open');
+  document.getElementById('squad-modal-content').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('squad-modal').classList.remove('open')">&times;</button>
+    <h3>创建车队</h3>
+    <div class="form-group"><input type="text" id="sq-name" placeholder="车队名称"></div>
+    <div class="form-group"><input type="text" id="sq-desc" placeholder="车队描述（选填）"></div>
+    <div class="form-group"><input type="text" id="sq-agents" placeholder="擅长特工，用逗号分隔（如: Jett, Sage）"></div>
+    <div class="form-group"><input type="text" id="sq-maps" placeholder="擅长地图，用逗号分隔"></div>
+    <div class="form-group"><input type="text" id="sq-guns" placeholder="擅长枪械，用逗号分隔"></div>
+    <button class="btn-action primary btn-full" id="btn-submit-squad">创建</button>
+  `;
+  document.getElementById('btn-submit-squad').addEventListener('click', async () => {
+    const name = document.getElementById('sq-name').value.trim();
+    if (!name) { toast('请输入车队名称', 'error'); return; }
+    const agents = document.getElementById('sq-agents').value.split(',').map(s => s.trim()).filter(Boolean);
+    const maps = document.getElementById('sq-maps').value.split(',').map(s => s.trim()).filter(Boolean);
+    const guns = document.getElementById('sq-guns').value.split(',').map(s => s.trim()).filter(Boolean);
+    const { data, error } = await supa.from('squads').insert({ name, description: document.getElementById('sq-desc').value.trim(), creator_id: currentUser.id, member_count: 1 }).select().single();
+    if (error) { toast(error.message, 'error'); sfxError(); return; }
+    await supa.from('squad_members').insert({ squad_id: data.id, user_id: currentUser.id, preferred_agents: agents, preferred_maps: maps, preferred_guns: guns, role: '队长' });
+    document.getElementById('squad-modal').classList.remove('open');
+    toast('车队创建成功', 'success'); sfxSuccess(); loadSquads();
+  });
+});
+
+function openSquadJoin(sid) {
+  document.getElementById('squad-modal').classList.add('open');
+  document.getElementById('squad-modal-content').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('squad-modal').classList.remove('open')">&times;</button>
+    <h3>加入车队</h3>
+    <div class="form-group"><input type="text" id="join-agents" placeholder="擅长特工，用逗号分隔（如: Jett, Sage）"></div>
+    <div class="form-group"><input type="text" id="join-maps" placeholder="擅长地图，用逗号分隔"></div>
+    <div class="form-group"><input type="text" id="join-guns" placeholder="擅长枪械，用逗号分隔"></div>
+    <button class="btn-action primary btn-full" id="btn-submit-join">加入</button>
+  `;
+  document.getElementById('btn-submit-join').addEventListener('click', async () => {
+    const agents = document.getElementById('join-agents').value.split(',').map(s => s.trim()).filter(Boolean);
+    const maps = document.getElementById('join-maps').value.split(',').map(s => s.trim()).filter(Boolean);
+    const guns = document.getElementById('join-guns').value.split(',').map(s => s.trim()).filter(Boolean);
+    const { error } = await supa.from('squad_members').insert({ squad_id: sid, user_id: currentUser.id, preferred_agents: agents, preferred_maps: maps, preferred_guns: guns });
+    if (error) { toast(error.message, 'error'); sfxError(); return; }
+    await supa.from('squads').update({ member_count: (allSquads.find(s => s.id === sid)?.member_count || 0) + 1 }).eq('id', sid);
+    document.getElementById('squad-modal').classList.remove('open');
+    toast('加入成功', 'success'); sfxSuccess(); loadSquads();
+  });
+}
+
+// === Matches ===
+async function loadMatches() {
+  if (!currentUser) { document.getElementById('match-list').innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px">登录后即可查看对局</p>'; return; }
+  const { data } = await supa.from('match_records').select('*').eq('user_id', currentUser.id).order('match_date', { ascending: false }).limit(30);
+  allMatches = data || [];
+  renderMatches();
+}
+
+function renderMatches() {
+  const list = document.getElementById('match-list');
+  if (!allMatches.length) { list.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px">暂无对局记录，点击"一键拉取"或"手动录入"</p>'; return; }
+  list.innerHTML = allMatches.map(m => `
+    <div class="match-row ${m.result}">
+      <div><span class="result-tag">${m.result === 'win' ? '胜利' : m.result === 'lose' ? '失败' : '平局'}</span></div>
+      <div>${getMapName(m.map_name)}</div>
+      <div>${getAgentName(m.agent)}</div>
+      <div class="kda">${m.kills}/${m.deaths}/${m.assists}</div>
+      <div>${m.score}</div>
+      <div>${m.econ_rating}</div>
+      <div style="font-size:.72rem;color:var(--text-dim)">${new Date(m.match_date).toLocaleDateString('zh-CN')}</div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('btn-fetch-matches').addEventListener('click', async () => {
+  if (!currentUser) { toast('请先登录', 'error'); return; }
+  const riotId = document.getElementById('riot-name').value.trim();
+  if (!riotId || !riotId.includes('#')) { toast('请输入完整的 Riot ID（格式: 玩家名#TAG）', 'error'); return; }
+  const [name, tag] = riotId.split('#');
+  toast('正在从 Riot 拉取对局...', '');
+  try {
+    const resp = await fetch(`${EDGE_URL}?name=${encodeURIComponent(name)}&tag=${encodeURIComponent(tag)}&region=ap`);
+    const json = await resp.json();
+    if (json.error) { toast(json.error, 'error'); sfxError(); return; }
+    if (!json.matches || !json.matches.length) { toast('未找到对局记录', 'error'); return; }
+    // Save PUUID to profile
+    if (json.puuid) { await supa.from('profiles').update({ riot_id: riotId, riot_puuid: json.puuid }).eq('id', currentUser.id); }
+    // Insert matches
+    let inserted = 0;
+    for (const m of json.matches) {
+      const { error } = await supa.from('match_records').upsert({
+        user_id: currentUser.id,
+        map_name: m.mapId, agent: m.agentId, result: m.result,
+        kills: m.kills, deaths: m.deaths, assists: m.assists,
+        score: m.score, econ_rating: m.econRating, match_date: m.matchDate,
+      }, { onConflict: 'id' });
+      if (!error) inserted++;
+    }
+    toast(`成功拉取 ${inserted} 场对局`, 'success'); sfxSuccess(); loadMatches();
+  } catch(e) { toast('连接失败: ' + e.message, 'error'); sfxError(); }
+});
+
+document.getElementById('btn-add-match').addEventListener('click', () => {
+  if (!currentUser) { toast('请先登录', 'error'); return; }
+  document.getElementById('match-modal').classList.add('open');
+  document.getElementById('match-modal-content').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('match-modal').classList.remove('open')">&times;</button>
+    <h3>手动录入对局</h3>
+    <div class="form-group"><select id="m-map" style="width:100%"><option value="">选择地图</option>${MAP_NAMES.map(([id,name]) => `<option value="${id}">${name}</option>`).join('')}</select></div>
+    <div class="form-group"><select id="m-agent" style="width:100%"><option value="">选择特工</option>${Object.entries(AGENT_DATA).map(([id,a]) => `<option value="${id}">${a.name}</option>`).join('')}</select></div>
+    <div class="form-group"><select id="m-result" style="width:100%"><option value="win">胜利</option><option value="lose">失败</option><option value="draw">平局</option></select></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <input type="number" id="m-kills" placeholder="击杀" min="0">
+      <input type="number" id="m-deaths" placeholder="阵亡" min="0">
+      <input type="number" id="m-assists" placeholder="助攻" min="0">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+      <input type="number" id="m-score" placeholder="战斗分数" min="0">
+      <input type="number" id="m-econ" placeholder="经济评分" min="0">
+    </div>
+    <button class="btn-action primary btn-full" style="margin-top:12px" id="btn-submit-match">录入</button>
+  `;
+  document.getElementById('btn-submit-match').addEventListener('click', async () => {
+    const map = document.getElementById('m-map').value;
+    const agent = document.getElementById('m-agent').value;
+    if (!map || !agent) { toast('请选择地图和特工', 'error'); return; }
+    const { error } = await supa.from('match_records').insert({
+      user_id: currentUser.id, map_name: map, agent,
+      result: document.getElementById('m-result').value,
+      kills: parseInt(document.getElementById('m-kills').value) || 0,
+      deaths: parseInt(document.getElementById('m-deaths').value) || 0,
+      assists: parseInt(document.getElementById('m-assists').value) || 0,
+      score: parseInt(document.getElementById('m-score').value) || 0,
+      econ_rating: parseInt(document.getElementById('m-econ').value) || 0,
+    });
+    if (error) { toast(error.message, 'error'); sfxError(); return; }
+    document.getElementById('match-modal').classList.remove('open');
+    toast('对局录入成功', 'success'); sfxSuccess(); loadMatches();
+  });
+});
+
+// === Leaderboard ===
+async function loadLeaderboard(lbType = 'squads') {
+  const content = document.getElementById('lb-content');
+  if (lbType === 'squads') {
+    const { data } = await supa.from('squads').select('*').order('win_rate', { ascending: false }).limit(20);
+    if (!data || !data.length) { content.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px">暂无车队数据</p>'; return; }
+    content.innerHTML = `<table class="lb-table"><thead><tr><th>#</th><th>车队</th><th>人数</th><th>胜率</th></tr></thead><tbody>${data.map((s,i) => `
+      <tr><td><span class="rank-badge ${i<3 ? 'gold' : i<10 ? 'silver' : 'bronze'}">${i+1}</span></td><td>${s.name}</td><td>${s.member_count}</td><td>${(s.win_rate||0).toFixed(1)}%</td></tr>
+    `).join('')}</tbody></table>`;
+  } else {
+    const { data } = await supa.from('profiles').select('*').order('kills', { ascending: false }).limit(20);
+    if (!data || !data.length) { content.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px">暂无玩家数据</p>'; return; }
+    content.innerHTML = `<table class="lb-table"><thead><tr><th>#</th><th>玩家</th><th>K/D/A</th><th>对局</th><th>胜率</th></tr></thead><tbody>${data.map((p,i) => {
+      const wr = p.total_matches > 0 ? (p.wins / p.total_matches * 100).toFixed(1) : '0.0';
+      return `<tr><td><span class="rank-badge ${i<3 ? 'gold' : i<10 ? 'silver' : 'bronze'}">${i+1}</span></td><td>${p.username || p.riot_id || '匿名'}</td><td>${p.kills}/${p.deaths}/${p.assists}</td><td>${p.total_matches}</td><td>${wr}%</td></tr>`;
+    }).join('')}</tbody></table>`;
+  }
+}
+
+document.querySelectorAll('#lb-subtabs .sub-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#lb-subtabs .sub-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadLeaderboard(btn.dataset.lb);
+  });
+});
+
+// === Profile ===
+function renderProfile() {
+  const content = document.getElementById('profile-content');
+  if (!currentUser) { content.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px">请先登录</p>'; return; }
+  content.innerHTML = `
+    <div class="profile-card">
+      <div class="avatar">${currentProfile?.username?.[0]?.toUpperCase() || '?'}</div>
+      <div class="profile-field"><label>游戏昵称</label><input type="text" id="pf-username" value="${currentProfile?.username || ''}"></div>
+      <div class="profile-field"><label>Riot ID</label><input type="text" id="pf-riot" value="${currentProfile?.riot_id || ''}" placeholder="玩家名#TAG"></div>
+      <button class="btn-action primary" id="btn-save-profile" style="width:100%">保存</button>
+      <div style="margin-top:20px">
+        <div class="setting-row"><span class="lbl">暗黑模式</span><label class="toggle-switch"><input type="checkbox" id="toggle-theme" ${document.documentElement.getAttribute('data-theme')==='dark'?'checked':''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><span class="lbl">音效</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap">${sinsData.map(s => `
+      <span style="padding:4px 10px;border-radius:12px;font-size:.78rem;background:var(--surface);border:1px solid var(--border)">${s.emoji} ${s.name}</span>
+    `).join('')}</div>
+  `;
+  document.getElementById('btn-save-profile').addEventListener('click', async () => {
+    const username = document.getElementById('pf-username').value.trim();
+    const riotId = document.getElementById('pf-riot').value.trim();
+    const { error } = await supa.from('profiles').upsert({ id: currentUser.id, username, riot_id: riotId });
+    if (error) { toast(error.message, 'error'); sfxError(); return; }
+    currentProfile = { ...currentProfile, username, riot_id: riotId };
+    updateAuthUI();
+    toast('保存成功', 'success'); sfxSuccess();
+  });
+  document.getElementById('toggle-theme').addEventListener('change', e => {
+    document.documentElement.setAttribute('data-theme', e.target.checked ? 'dark' : 'light');
+    localStorage.setItem('vct_theme', e.target.checked ? 'dark' : 'light');
+  });
+}
+
+// === Share ===
+document.getElementById('btn-share').addEventListener('click', () => {
+  const url = 'https://chenyizhou188.github.io/valorant-sins/';
+  navigator.clipboard.writeText(url).then(() => toast('链接已复制，分享给好友吧', 'success'));
+  sfxClick();
+});
+
+// === Search ===
+document.getElementById('btn-search').addEventListener('click', () => {
+  const activeTab = document.querySelector('.tab-content.active')?.id;
+  if (activeTab === 'tab-sins') document.getElementById('sin-search').focus();
+  if (activeTab === 'tab-squad') document.getElementById('squad-search').focus();
+  sfxClick();
+});
+
+// === Guide Sub Tabs ===
+document.querySelectorAll('#guide-subtabs .sub-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#guide-subtabs .sub-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGuide(btn.dataset.sub);
+  });
+});
+
+// === Close Modals on Overlay Click ===
+document.querySelectorAll('.guide-modal, .auth-overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+});
+
+// === Init ===
+initUser();
+renderSins();
+loadQuote();
+loadSquads();
+loadMatches();
+loadLeaderboard();
+
+// === Full Guide Content (collapsed by default, rendered on demand) ===
+</script>
+
+<script>
+// === AGENT DATA (25 agents) ===
+const AGENT_DATA = {
+  Jett: { name: '捷风 (Jett)', role: '决斗者', icon: '💨', skills: [['逐风 (C)','向前冲刺或向上跃起'],['烟云 (Q)','投掷烟雾弹，可控制方向'],['顺风 (E)','向移动方向瞬移'],['剑刃风暴 (X)','装备精准飞刀，击杀刷新']], synergy: ['贤者 (治疗配合)','猎枭 (侦察后冲锋)'], maps: ['亚海悬城','源工重镇','深海遗珠'] },
+  Phoenix: { name: '不死鸟 (Phoenix)', role: '决斗者', icon: '🔥', skills: [['闪光曲球 (C)','投掷曲线闪光弹'],['火墙 (Q)','制造火焰墙，穿过时治疗自己'],['烈焰 (E)','投掷燃烧弹，对敌人造成伤害并治疗自己'],['再来一次 (X)','标记当前位置，死亡或时间结束后复活']], synergy: ['瑞兹 (双决斗推进)','幽影 (烟雾掩护)'], maps: ['隐世修所','深海遗珠','亚海悬城'] },
+  Raze: { name: '雷兹 (Raze)', role: '决斗者', icon: '💣', skills: [['爆破机器人 (C)','部署追踪机器人炸飞敌人'],['炸药包 (Q)','投掷粘性炸药包，可引爆'],['爆破弹 (E)','发射弹跳榴弹'],['晚安焰火 (X)','发射火箭弹造成大范围伤害']], synergy: ['菲德 (信息+火力)','奇乐 (区域控制)'], maps: ['源工重镇','裂变峡谷','深海遗珠'] },
+  Reyna: { name: '芮娜 (Reyna)', role: '决斗者', icon: '👁️', skills: [['睥睨 (C)','发射灵球使敌人近视'],['噬魂 (Q)','吞噬灵球快速治疗'],['傲然 (E)','吞噬灵球进入无形状态'],['女王降临 (X)','大幅提升射速和换弹速度']], synergy: ['猎枭 (闪光配合)','星礈 (烟雾掩护收割)'], maps: ['亚海悬城','源工重镇','深海遗珠'] },
+  Yoru: { name: '约鲁 (Yoru)', role: '决斗者', icon: '🌀', skills: [['假身 (C)','部署假人向前移动'],['闪光弹 (Q)','投掷可反弹闪光弹'],['传送门 (E)','放置传送信标，随时传送'],['维度漂移 (X)','进入完全隐身状态']], synergy: ['钢锁 (区域封锁)','黑梦 (信息收集)'], maps: ['深海遗珠','亚海悬城','微风岛屿'] },
+  Neon: { name: '妮虹 (Neon)', role: '决斗者', icon: '⚡', skills: [['快速通道 (C)','制造两道静电墙'],['闪电弹 (Q)','投掷弹跳电击弹'],['高速通道 (E)','高速冲刺滑铲'],['过载 (X)','从指尖发射持续电流']], synergy: ['幽影 (烟雾掩护冲刺)','斯凯 (治疗+闪光)'], maps: ['源工重镇','裂变峡谷','极地寒港'] },
+  Iso: { name: '易苏 (Iso)', role: '决斗者', icon: '🛡️', skills: [['应急 (C)','制造不可摧毁的屏障墙'],['削弱 (Q)','发射能量弹施加脆弱'],['双倍下注 (E)','启动后击杀产生能量球'],['杀戮契约 (X)','创建决斗场，失败者淘汰']], synergy: ['奇乐 (区域防守)','贤者 (复活配合)'], maps: ['亚海悬城','源工重镇'] },
+  Sage: { name: '贤者 (Sage)', role: '哨卫', icon: '🩹', skills: [['屏障灵球 (C)','制造坚固冰墙'],['缓速灵球 (Q)','投掷灵球减速敌人'],['治愈灵球 (E)','治疗队友或自己'],['复活 (X)','复活一名阵亡队友']], synergy: ['捷风 (治疗配合)','芮娜 (复活收割者)'], maps: ['亚海悬城','隐世修所','极地寒港'] },
+  Cypher: { name: '零 (Cypher)', role: '哨卫', icon: '🕵️', skills: [['绊索 (C)','放置绊索陷阱'],['摄像头 (Q)','放置可标记敌人的摄像头'],['赛博牢笼 (E)','投掷减速烟幕'],['神经窃取 (X)','揭示所有敌人位置']], synergy: ['猎枭 (双信息位)','奇乐 (陷阱叠加)'], maps: ['亚海悬城','隐世修所','微风岛屿'] },
+  Killjoy: { name: '奇乐 (Killjoy)', role: '哨卫', icon: '🤖', skills: [['纳米蜂群 (C)','部署隐形感应手雷'],['警报机器人 (Q)','部署追踪爆炸机器人'],['炮台 (E)','部署自动射击炮台'],['封锁 (X)','部署大范围禁锢装置']], synergy: ['零 (双哨卫封锁)','蝰蛇 (区域控制)'], maps: ['亚海悬城','隐世修所','源工重镇'] },
+  Chamber: { name: '钱博尔 (Chamber)', role: '哨卫', icon: '🎩', skills: [['猎头者 (C)','装备重型手枪'],['交游 (Q)','放置传送信标'],['隆重登场 (E)','放置减速感应器'],['孤高火力 (X)','装备定制狙击枪']], synergy: ['捷风 (高机动+狙击)','零 (双哨卫防守)'], maps: ['深海遗珠','亚海悬城','微风岛屿'] },
+  Deadlock: { name: '铁臂 (Deadlock)', role: '哨卫', icon: '🔗', skills: [['重力网 (C)','投掷重力网减速'],['声波传感器 (Q)','放置声音触发晕眩器'],['屏障网 (E)','投掷可展开屏障'],['歼灭 (X)','发射声波脉冲拉拽敌人致死']], synergy: ['奇乐 (区域防守)','贤者 (屏障叠加)'], maps: ['亚海悬城','隐世修所'] },
+  Vyse: { name: '维斯 (Vyse)', role: '哨卫', icon: '🔮', skills: [['奥术地雷 (C)','放置隐形感应地雷'],['虹吸 (Q)','放置减速虹吸器'],['荆棘玫瑰 (E)','部署尖刺减速陷阱'],['钢刺花园 (X)','释放大规模尖刺风暴']], synergy: ['零 (信息+陷阱)','幽影 (烟幕掩护)'], maps: ['亚海悬城','深海遗珠'] },
+  Brimstone: { name: '炼狱 (Brimstone)', role: '控场者', icon: '🌫️', skills: [['燃烧弹 (C)','投掷燃烧弹'],['振奋信标 (Q)','放置攻速加成信标'],['空投烟幕 (E)','使用地图部署三颗烟幕'],['轨道打击 (X)','召唤激光炮击']], synergy: ['捷风 (烟幕+冲锋)','贤者 (区域控制+治疗)'], maps: ['亚海悬城','源工重镇','深海遗珠'] },
+  Omen: { name: '幽影 (Omen)', role: '控场者', icon: '🌑', skills: [['偏执狂 (C)','发射失明弹'],['暗影步 (Q)','短距离传送'],['暗影烟幕 (E)','部署空心烟幕'],['暗影降临 (X)','全地图传送']], synergy: ['捷风 (烟幕掩护)','芮娜 (失明掩护收割)'], maps: ['亚海悬城','深海遗珠','极地寒港'] },
+  Viper: { name: '蝰蛇 (Viper)', role: '控场者', icon: '☠️', skills: [['蛇吻 (C)','投掷毒液弹'],['毒云 (Q)','部署有毒烟幕'],['毒墙 (E)','部署毒液墙'],['毒蛇深渊 (X)','释放大范围毒雾']], synergy: ['零 (信息位配合)','奇乐 (区域封锁)'], maps: ['微风岛屿','极地寒港','深海遗珠'] },
+  Astra: { name: '星礈 (Astra)', role: '控场者', icon: '🌟', skills: [['重力井 (C)','制造重力井拉扯敌人'],['新星脉冲 (Q)','制造震荡冲击'],['星云/消散 (E)','部署烟幕或假烟幕'],['星界分割 (X)','制造贯穿全图的屏障墙']], synergy: ['炼狱 (双控场)','捷风 (烟幕+收割)'], maps: ['亚海悬城','深海遗珠','隐世修所'] },
+  Harbor: { name: '海神 (Harbor)', role: '控场者', icon: '🌊', skills: [['海湾 (C)','部署弧形水墙'],['涌流 (Q)','发射减速水弹'],['涨潮 (E)','制造前进水墙'],['清算 (X)','释放追踪水柱']], synergy: ['菲德 (信息+控制)','捷风 (水墙掩护)'], maps: ['深海遗珠','微风岛屿'] },
+  Clove: { name: '丁香 (Clove)', role: '控场者', icon: '🌸', skills: [['烟花 (C)','投掷迷惑闪光弹'],['迷香 (Q)','制造迷惑毒云'],['虹吸 (E)','放置减速陷阱'],['幻境 (X)','释放大型幻象迷雾']], synergy: ['雷兹 (烟幕掩护爆破)','奇乐 (区域防守)'], maps: ['亚海悬城','深海遗珠'] },
+  Sova: { name: '猎枭 (Sova)', role: '先锋', icon: '🦉', skills: [['猫头鹰无人机 (C)','部署标记无人机'],['震撼箭 (Q)','发射范围震撼箭'],['侦察箭 (E)','发射透视侦察箭'],['猎人之怒 (X)','发射穿透能量箭']], synergy: ['捷风 (侦察后冲锋)','炼狱 (信息+烟幕)'], maps: ['亚海悬城','源工重镇','微风岛屿'] },
+  Breach: { name: '铁臂 (Breach)', role: '先锋', icon: '💪', skills: [['震颤 (C)','发射穿透震荡波'],['闪光点 (Q)','发射穿墙闪光'],['余震 (E)','发射穿透爆炸'],['滚雷 (X)','释放大范围震波']], synergy: ['捷风 (闪光后收割)','雷兹 (震波配合爆破)'], maps: ['源工重镇','隐世修所','裂变峡谷'] },
+  Skye: { name: '斯凯 (Skye)', role: '先锋', icon: '🌿', skills: [['自然之力 (C)','恢复范围内队友'],['指引之光 (Q)','操控闪光鹰'],['寻踪之灵 (E)','操控侦察狼'],['探索者 (X)','释放追踪精灵']], synergy: ['贤者 (双治疗)','捷风 (信息+冲锋)'], maps: ['亚海悬城','微风岛屿','隐世修所'] },
+  KAYO: { name: 'KAY/O', role: '先锋', icon: '🤖', skills: [['碎片 (C)','投掷压制爆炸弹'],['闪光弹 (Q)','投掷闪光弹'],['零点 (E)','投掷沉默刀'],['无效 (X)','释放压制脉冲']], synergy: ['捷风 (沉默后冲锋)','芮娜 (闪光收割)'], maps: ['亚海悬城','深海遗珠','源工重镇'] },
+  Fade: { name: '菲德 (Fade)', role: '先锋', icon: '👻', skills: [['徘徊者 (C)','释放追踪猎犬'],['控制 (Q)','投掷致盲灵球'],['幽魂 (E)','投掷探查眼'],['夜幕降临 (X)','释放大范围恐惧']], synergy: ['雷兹 (探查后爆破)','蝰蛇 (毒雾+恐惧)'], maps: ['深海遗珠','亚海悬城','极地寒港'] },
+  Gekko: { name: '盖克 (Gekko)', role: '先锋', icon: '🦎', skills: [['鱼缸怪 (C)','投掷致盲黏液'],['飞翼 (Q)','投掷闪光弹'],['眩晕兽 (E)','投掷跟踪眩晕弹'],['大块头 (X)','释放追踪禁锢兽']], synergy: ['贤者 (治疗+控制)','捷风 (控制后冲锋)'], maps: ['亚海悬城','深海遗珠','微风岛屿'] },
+  Tejo: { name: '铁驭 (Tejo)', role: '先锋', icon: '🎯', skills: [['制导导弹 (C)','发射制导追踪弹'],['侦察无人机 (Q)','部署侦察无人机'],['震撼地雷 (E)','放置感应震撼雷'],['导弹齐射 (X)','召唤大规模导弹轰炸']], synergy: ['炼狱 (烟幕+轰炸)','猎枭 (双侦察)'], maps: ['源工重镇','裂变峡谷','亚海悬城'] },
+};
+
+const MAP_NAMES = [
+  ['Ascent','亚海悬城'],['Bind','源工重镇'],['Haven','隐世修所'],['Split','裂变峡谷'],
+  ['Icebox','极地寒港'],['Breeze','微风岛屿'],['Fracture','深海遗珠'],['Pearl','珍珠'],
+  ['Lotus','莲华古城'],['Sunset','日落之城'],['Abyss','深渊'],
+];
+function getMapName(id) { return MAP_NAMES.find(([i]) => i === id)?.[1] || id; }
+function getAgentName(id) { return AGENT_DATA[id]?.name || id; }
+
+// === Render Guide ===
+function renderGuide(sub) {
+  const c = document.getElementById('guide-content');
+  if (sub === 'agents') {
+    c.innerHTML = `<div class="guide-grid">${Object.entries(AGENT_DATA).map(([id,a]) => `
+      <div class="guide-card" onclick="openAgent('${id}')" style="animation:fadeSlideIn ${0.1+Math.random()*0.3}s ease-out both">
+        <span class="agent-icon">${a.icon}</span><div class="agent-name">${a.name.split('(')[0].trim()}</div><div class="agent-role">${a.role}</div>
+      </div>`).join('')}</div>`;
+  } else if (sub === 'mira') {
+    c.innerHTML = `<div class="guide-grid">${Object.entries(AGENT_DATA).filter(([id]) => ['Jett','Raze','Reyna','Phoenix','Yoru','Neon','Iso','Chamber'].includes(id)).map(([id,a]) => `
+      <div class="guide-card" onclick="openAgent('${id}')"><span class="agent-icon">${a.icon}</span><div class="agent-name">${a.name.split('(')[0].trim()}</div><div class="agent-role">${a.role}</div></div>`).join('')}</div>`;
+  } else if (sub === 'maps') {
+    c.innerHTML = `<div class="guide-grid">${MAP_NAMES.map(([id,name]) => `
+      <div class="guide-card"><span class="agent-icon">🗺️</span><div class="agent-name">${name}</div><div class="agent-role">地图 ID: ${id}</div></div>`).join('')}</div>`;
+  } else if (sub === 'weapons') {
+    const weapons = [['狂徒','突击步枪','2900','高伤害，精准射击'],['幻影','突击步枪','2900','消音，稳定连射'],['破坏','突击步枪','3200','三连发精准'],['判官','霰弹枪','1850','近战爆发'],['飞将','霰弹枪','850','廉价近战'],['暴徒','冲锋枪','1600','高射速'],['骇灵','冲锋枪','950','廉价冲锋'],['狂怒','手枪','免费','基础手枪'],['鬼魅','手枪','500','消音手枪'],['正义','手枪','800','上半身一枪'],['神射','手枪','450','快速射击'],['间谍','狙击枪','4700','重型狙击'],['警长','狙击枪','2400','半自动狙击'],['战神','机枪','3200','持续火力']];
+    c.innerHTML = `<div class="guide-grid">${weapons.map(w => `<div class="guide-card"><span class="agent-icon">🔫</span><div class="agent-name">${w[0]}</div><div class="agent-role">${w[1]} · 💰${w[2]}</div><div style="font-size:.75rem;color:var(--text-dim);margin-top:4px">${w[3]}</div></div>`).join('')}</div>`;
+  } else if (sub === 'items') {
+    const items = [['轻型护盾','400','+25 护甲'],['重型护盾','1000','+50 护甲'],['再生护盾','650','+25 护甲+恢复'],['烟雾弹','250','遮挡视野'],['闪光弹','250','致盲敌人'],['燃烧弹','250','区域伤害'],['震荡弹','250','减速+模糊']];
+    c.innerHTML = `<div class="guide-grid">${items.map(it => `<div class="guide-card"><span class="agent-icon">🛡️</span><div class="agent-name">${it[0]}</div><div class="agent-role">💰${it[1]}</div><div style="font-size:.75rem;color:var(--text-dim);margin-top:4px">${it[2]}</div></div>`).join('')}</div>`;
+  } else if (sub === 'progress') {
+    const stages = [['阶段1','枪法基础','爆头线、移动射击、后坐力控制'],['阶段2','地图认知','道具投掷点、预瞄位置、敌方常规站位'],['阶段3','特工精通','掌握2-3个特工的所有技能和连招'],['阶段4','经济管理','何时存钱、何时 force buy、团队经济同步'],['阶段5','沟通协作','报点、战术执行、残局协调'],['阶段6','意识进阶','敌方动向预测、战术反制、心态管理'],['阶段7','赋能之路','录像复盘、针对性训练、理解 meta']];
+    c.innerHTML = `<div style="display:flex;flex-direction:column;gap:12px">${stages.map((s,i) => `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:3px solid var(--brand-red)">
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:4px">${s[0]}：${s[1]}</div>
+        <div style="font-size:.82rem;color:var(--text-dim)">${s[2]}</div>
+      </div>`).join('')}</div>`;
+  } else if (sub === 'decisions') {
+    c.innerHTML = `
+    <h3 style="color:var(--brand-red);margin-bottom:12px">特工选择决策树</h3>
+    <div style="background:var(--surface);padding:16px;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;font-size:.85rem;line-height:2">
+      🎯 你喜欢主动进攻？→ 决斗者 (捷风/芮娜/雷兹)<br>
+      🛡️ 你喜欢防守 + 信息？→ 哨卫 (零/奇乐/钱博尔)<br>
+      🌫️ 你喜欢控制地图？→ 控场者 (炼狱/幽影/蝰蛇)<br>
+      🔍 你喜欢为团队提供情报？→ 先锋 (猎枭/菲德/斯凯)
+    </div>
+    <h3 style="color:var(--brand-red);margin-bottom:12px">进攻/防守决策</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div style="background:var(--surface);padding:16px;border-radius:var(--radius);border:1px solid var(--border)">
+        <div style="font-weight:700;color:var(--brand-red);margin-bottom:8px">⚔️ 进攻方</div>
+        <div style="font-size:.82rem;color:var(--text-dim);line-height:1.8">
+          1. 获取信息（侦察技能/无人机）<br>
+          2. 烟幕封关键视野<br>
+          3. 闪光/震荡清点<br>
+          4. 同步推进，补枪到位<br>
+          5. 下包后守住十字火力
+        </div>
+      </div>
+      <div style="background:var(--surface);padding:16px;border-radius:var(--radius);border:1px solid var(--border)">
+        <div style="font-weight:700;color:var(--accent-cyan);margin-bottom:8px">🛡️ 防守方</div>
+        <div style="font-size:.82rem;color:var(--text-dim);line-height:1.8">
+          1. 布防关键位置<br>
+          2. 信息获取判断进攻方向<br>
+          3. 拖延时间（道具/烟幕）<br>
+          4. 呼叫队友轮转补位<br>
+          5. 残局以拆包为优先
+        </div>
+      </div>
+    </div>
+    <h3 style="color:var(--brand-red);margin:20px 0 12px">经济系统速查</h3>
+    <div style="background:var(--surface);padding:16px;border-radius:var(--radius);border:1px solid var(--border);font-size:.82rem;line-height:2">
+      💰 击杀 +200 | 助攻 +100 | 拆包 +300 | 下包 +300<br>
+      📊 失败方连续补偿：第1局 +1900 | 第2局 +2400 | 第3局 +2900<br>
+      ✅ Force Buy：全队 >3500 即可强起 | ECO：全队 <2500 建议存钱
+    </div>`;
+  }
+}
+
+function openAgent(id) {
+  const a = AGENT_DATA[id];
+  if (!a) return;
+  document.getElementById('agent-modal').classList.add('open');
+  document.getElementById('agent-modal-content').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('agent-modal').classList.remove('open')">&times;</button>
+    <h3>${a.icon} ${a.name}</h3>
+    <div style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;background:var(--surface);border:1px solid var(--border);margin-bottom:12px">${a.role}</div>
+    <div class="skill-list">${a.skills.map(s => `
+      <div class="skill-item"><div class="sk-name">${s[0]}</div><div class="sk-desc">${s[1]}</div></div>
+    `).join('')}</div>
+    <div class="guide-sub"><h4>🤝 最佳配合</h4>${a.synergy.map(s => `<span class="sub-tag">${s}</span>`).join('')}</div>
+    <div class="guide-sub"><h4>🗺️ 推荐地图</h4>${a.maps.map(m => `<span class="sub-tag">${m}</span>`).join('')}</div>
+  `;
+  sfxClick();
+}
+
+// === Initial guide render ===
+document.getElementById('guide-content').innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:40px">点击上方标签查看完整进阶指南</p>';
+</script>
+
 </body>
 </html>
